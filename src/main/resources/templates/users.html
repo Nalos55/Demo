@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+
+    <div class="container">
+        <form method="get" th:action="@{/client/users/registration}" enctype="utf8">
+            <button type="submit">AddUser</button>
+        </form>
+        <table class="table">
+            <tr>
+                <th>Name</td>
+            </tr>
+            <tr th:each="user: ${users}">
+                <td th:text="${user.username}"></td>
+                <td>
+                    <form th:method="get" th:action="@{/client/users/modify/{username}(username=${user.username})}"
+                        enctype="utf8">
+                        <button type="submit">Modify User</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:method="post" th:action="@{/client/users/delete/{username}(username=${user.username})}"
+                        enctype="utf8">
+                        <button type="submit">Delete
+                            User</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

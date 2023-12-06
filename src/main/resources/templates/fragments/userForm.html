@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+    <div th:fragment="user-form-post">
+        <form th:method=post th:action="@{/client/users/registration}" enctype="utf8" th:object="${user}">
+            <sec:csrfInput />
+            <div>
+                <label for="username">Name:</label>
+                <input type="text" name="username" th:field="*{username}"></input>
+                <label for="password">Password:</label>
+                <input type="password" name="password" th:field="*{password}"></input>
+            </div>
+
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+    <div th:fragment="user-form-delete">
+        <form th:method=post th:action="@{/client/users/delete}" enctype="utf8" th:object="${user}">
+            <sec:csrfInput />
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" name="username" th:field="*{username}"></input>
+            </div>
+
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+    <div th:fragment="user-form-modify">
+        <form th:method=post th:action="@{/client/users/modify}" enctype="utf8" th:object="${user}">
+            <sec:csrfInput />
+            <div>
+                <label for="username">New Name:</label>
+                <input type="text" name="username" th:field="*{username}"></input>
+                <label for="password">Password:</label>
+                <input type="password" name="password" th:field="*{password}"></input>
+            </div>
+
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>
