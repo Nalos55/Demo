@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create Post</h5>
+                        <form class="d-block" th:method="post" th:action="@{/posts}" enctype="utf8" th:object="${post}">
+                            <div><label for="title" class="form-label d-block w-100">Title: <input type="text"
+                                        placeholder="Title" th:value="${title}" name="title" id="title"
+                                        class="textarea d-block w-100" /></label>
+                            </div>
+                            <div>
+                                <label for="content" class="form-label d-block w-100">Content: <textarea
+                                        placeholder="Content" th:value="${content}" name="content" id="content"
+                                        class="textarea d-block w-100" rows="15"></textarea></label>
+                            </div>
+                            <div><input type="submit" value="Submit" class="btn btn-body"></div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

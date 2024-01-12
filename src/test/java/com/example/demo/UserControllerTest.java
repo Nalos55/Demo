@@ -25,6 +25,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -42,6 +43,8 @@ public class UserControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
+	@MockBean
+	private PasswordEncoder encoder;
 	@MockBean
 	private UserRepository repository;
 	@MockBean
@@ -80,10 +83,10 @@ public class UserControllerTest {
 	@Test
 	public void all() throws Exception {
 		List<User> users = new ArrayList<>();
-		users.add(new User("Mario"));
-		users.add(new User("Luigi"));
-		users.add(new User("Peach"));
-		users.add(new User("Daisy"));
+		users.add(new User("Mario", "A"));
+		users.add(new User("Luigi", "A"));
+		users.add(new User("Peach", "A"));
+		users.add(new User("Daisy", "A"));
 
 		when(repository
 				.findAll())
@@ -101,7 +104,7 @@ public class UserControllerTest {
 
 	@Test
 	public void registration() throws Exception {
-		User user = new User("Mario");
+		User user = new User("Mario", "A");
 		String userString = toJson(user);
 
 		when(repository
@@ -113,6 +116,10 @@ public class UserControllerTest {
 				.toModel(Mockito
 						.any(User.class)))
 				.thenCallRealMethod();
+		when(encoder
+				.encode(Mockito
+						.any(String.class)))
+				.thenReturn("encoded");
 
 		mvc.perform(post("/users")
 				.content(userString)
@@ -125,19 +132,22 @@ public class UserControllerTest {
 	@Test
 	public void delete() throws Exception {
 		List<User> users = new ArrayList<>();
-		users.add(new User("Mario"));
-		users.add(new User("Luigi"));
-		users.add(new User("Peach"));
-		users.add(new User("Daisy"));
+		users.add(new User("Mario", "A"));
+		users.add(new User("Luigi", "A"));
+		users.add(new User("Peach", "A"));
+		users.add(new User("Daisy", "A"));
 
 		User user = users.get(0);
 		String content = toJson(user);
 
+		when(repository
+				.findByUsername(Mockito.any(String.class)))
+				.thenReturn(Optional.of(user));
 		doNothing().when(repository)
 				.delete(Mockito
 						.any(User.class));
 
-		mvc.perform(MockMvcRequestBuilders.delete("/users")
+		mvc.perform(MockMvcRequestBuilders.delete("/users/" + user.getUsername())
 				.content(content)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
@@ -150,15 +160,15 @@ public class UserControllerTest {
 	public void put() throws Exception {
 
 		List<User> users = new ArrayList<>();
-		User user = new User("Mario");
+		User user = new User("Mario", "A");
 		users.add(user);
-		user = new User("Luigi");
+		user = new User("Luigi", "A");
 		users.add(user);
-		user = new User("Peach");
+		user = new User("Peach", "A");
 		users.add(user);
-		user = new User("Daisy");
+		user = new User("Daisy", "A");
 		users.add(user);
-		users.add(new User("Daisy"));
+		users.add(new User("Daisy", "A"));
 		users.add(user);
 
 		user = users.get(0);
@@ -184,7 +194,7 @@ public class UserControllerTest {
 				.andExpect(status().isCreated())
 				.andDo(print());
 
-		user = new User("Pinocchio");
+		user = new User("Pinocchio", "A");
 		content = toJson(user);
 		when(repository
 				.findByUsername(Mockito
@@ -194,6 +204,10 @@ public class UserControllerTest {
 				.save(Mockito
 						.any(User.class)))
 				.thenReturn(user);
+		when(encoder
+				.encode(Mockito
+						.any(String.class)))
+				.thenReturn("encoded");
 
 		mvc.perform(MockMvcRequestBuilders.put("/users")
 				.content(content)

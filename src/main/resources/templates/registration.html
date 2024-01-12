@@ -6,10 +6,17 @@
 </head>
 
 <body>
-    <h1>createAccount</h1>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <h1>createAccount</h1>
 
 
-    <div th:insert="~{fragments/userForm :: user-form-post}"></div>
+                <div th:replace="~{fragments/userForm :: user-form-post}"></div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,56 @@
+body {
+    background-color: #cca3e6;
+    font-size: 1.2rem;
+}
+
+.dropdown-menu {
+    min-width: 60px;
+    padding: 0px;
+}
+
+.dropdown-item {
+    padding: 0px;
+    width: 100%;
+}
+
+.navbar {
+    background-color: #8A2BE2;
+    margin-bottom: 1rem;
+    color: #FFD700;
+}
+
+.btn-navbar,
+.btn-logout,
+.btn-dropdown,
+.btn-body,
+.btn-crud {
+    border: 1px solid #57107a;
+    background-color: #A020F0;
+    color: #FFD700;
+    font-size: 20px;
+    align-self: start;
+    margin: auto;
+}
+
+.btn-dropdown {
+    width: 100%;
+    border-radius: 0px;
+}
+
+.btn-login {
+    background-color: magenta;
+}
+
+.btn-logo {
+    background-image: url(/images/psi.webp);
+    background-size: 64px 64px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid #57107a;
+}
+
+.card,
+.border-card {
+    border-color: #A020F0;
+}

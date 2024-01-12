@@ -33,8 +33,8 @@ public class ConsumeWebService {
 
 	WebClient client = WebClient.builder()
 			.baseUrl("http://localhost:8080")
-			.defaultHeaders(headers -> headers.setBasicAuth("user1",
-					encoder.encode("password")))
+//			.defaultHeaders(headers -> headers.setBasicAuth("user1",
+//					encoder.encode("password")))
 			.build();
 
 	private Authentication getUserDetails() {
@@ -45,7 +45,8 @@ public class ConsumeWebService {
 	@GetMapping("/client/users")
 	public String getUsers(Model model) {
 		JsonNode result = client.get()
-				.uri("/users").accept(MediaType.APPLICATION_JSON)
+				.uri("/users")
+				.accept(MediaType.APPLICATION_JSON)
 				.retrieve().bodyToMono(JsonNode.class)
 				.block(Duration.ofSeconds(1));
 
@@ -72,7 +73,6 @@ public class ConsumeWebService {
 			model.addAttribute("users", users);
 			return "users";
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -86,13 +86,25 @@ public class ConsumeWebService {
 		return "registration";
 	}
 
+//	@ResponseBody
 	@PostMapping("/client/users/registration")
-	public String newUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
+	public String newUser(@ModelAttribute("user") User user,
+//			CsrfToken csrfToken,
+			BindingResult bindingResult) {
 		if (user.getUsername().length() <= 0) {
 			bindingResult.rejectValue("name",
 					"error.name", "Name must not be empty!");
 			return "redirect:/client/users";
 		}
+		if (user.getPassword().length() <= 0) {
+			bindingResult.rejectValue("name",
+					"error.name", "Name must not be empty!");
+			return "redirect:/client/users";
+		}
+
+//		return csrfToken.getParameterName() + " " + csrfToken.getToken();
+//		System.out.println(csrfToken.getHeaderName());
+//		System.out.println(csrfToken.getToken());
 
 		client.post()
 				.uri("/users")
@@ -101,6 +113,8 @@ public class ConsumeWebService {
 				.bodyToMono(String.class)
 				.block();
 		return "redirect:/client/users";
+
+//		return user.toString();
 	}
 
 	@PostMapping("/client/users/delete/{username}")
@@ -109,6 +123,7 @@ public class ConsumeWebService {
 		client.delete()
 				.uri("/users/" + username)
 				.retrieve()
+
 				.bodyToMono(String.class)
 				.block();
 		return "redirect:/client/users";

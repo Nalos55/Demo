@@ -6,9 +6,16 @@
 </head>
 
 <body>
-    <h1>deleteAccount</h1>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <h1>deleteAccount</h1>
 
-    <div th:include="~{fragments/userForm :: user-form-delete}"></div>
+                <div th:replace="~{fragments/userForm :: user-form-delete}"></div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+    <nav class="navbar pr-0" th:fragment="navbar">
+        <div class="container-fluid">
+            <div class="row align-items-center w-100">
+                <div class="col-auto navbar-brand">
+                    <form class="form-inline" th:method=get th:action="@{/}">
+                        <input type="submit" value="" class="btn btn-logo">
+                    </form>
+                </div>
+
+                <div class="col-auto nav-item dropdown p-0 m-1">
+                    <a class="nav-link dropdown-toggle btn btn-navbar" href="#" id="navbarUsersDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarUsersDropdown">
+                        <form class="dropdown-item" th:method=get th:action="@{/client/users}">
+                            <input type="submit" value="Print users" class="btn btn-dropdown" />
+                        </form>
+                        <form class="dropdown-item" th:method=get th:action="@{/client/users/registration}">
+                            <input type="submit" value="Add user" class="btn btn-dropdown" />
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-auto nav-item dropdown p-0 m-1">
+                    <a class="nav-link dropdown-toggle btn btn-navbar" href="#" id="navbarPostsDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Posts</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarPostsDropdown">
+                        <form class="dropdown-item" th:method=get th:action="@{/posts}">
+                            <input type="submit" value="Posts" class="btn btn-dropdown" />
+                        </form>
+                        <form class="dropdown-item" th:method=get th:action="@{/newPost}">
+                            <input type="submit" value="new Post" class="btn btn-dropdown" />
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-auto nav-item justify-content-end ml-auto pr-0">
+                    <form sec:authorize="isAuthenticated()" class="form-inline" th:action="@{/logout}" method="post">
+                        <h1 sec:authentication="name" class="mr-2"></h1>
+                        <input type="submit" value="Sign Out" class="btn btn-logout" />
+                    </form>
+                    <form sec:authorize="isAnonymous()" class="form-inline" th:action="@{/login}" method="post">
+                        <input type="submit" value="Sign In" class="btn btn-logout" />
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</body>

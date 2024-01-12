@@ -51,9 +51,12 @@ public class WebSecurityConfig {
 				// .csrf(csrf ->
 				// csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 				.csrf(csrf -> csrf.disable())
+//				.csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+//						.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
+				// .csrf(csrf -> csrf.csrfTokenRepository())
 				.authorizeHttpRequests((requests) -> {
 					requests
-							// .requestMatchers(mvc.pattern("/")).permitAll()
+							.requestMatchers(mvc.pattern("/posts")).authenticated()
 							// .anyRequest().authenticated();
 							.anyRequest().permitAll();
 				})
@@ -63,6 +66,7 @@ public class WebSecurityConfig {
 							.permitAll();
 				})
 				.logout((logout) -> logout.permitAll());
+//		http.addFilterAfter(new CsrfTokenResponseHeaderBindingFilter(), CsrfFilter.class);
 		return http.build();
 	}
 }

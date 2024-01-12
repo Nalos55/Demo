@@ -10,25 +10,14 @@
 </head>
 
 <body>
-    <h1>Home Page</h1>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name">thymeleaf</span>!</h1>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out" />
-    </form>
-
-    <form th:method=get th:action="@{/client/users}">
-        <input type="submit" value="Print users" />
-    </form>
-    <form th:method=get th:action="@{/client/users/registration}">
-        <input type="submit" value="Add user" />
-    </form>
-    <form th:method=get th:action="@{/client/users/delete}">
-        <input type="submit" value="Remove user" />
-    </form>
-    <form th:method=get th:action="@{/client/users/modify}">
-        <input type="submit" value="Modify user" />
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

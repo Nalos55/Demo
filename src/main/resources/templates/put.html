@@ -6,9 +6,16 @@
 </head>
 
 <body>
-    <h1>modifyAccount</h1>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <h1>modifyAccount</h1>
 
-    <div th:include="~{fragments/userForm :: user-form-modify}"></div>
+                <div th:replace="~{fragments/userForm :: user-form-modify}"></div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

@@ -66,7 +66,7 @@ public class UserController {
 				.body(entityModel);
 	}
 
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/users/{username}")
 	public ResponseEntity<?> deleteUser(@PathVariable String username) {
 		if (username == null) {
 			return ResponseEntity.notFound().build();
@@ -75,7 +75,7 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 
-		repository.deleteByUsername(username);
+		repository.deleteById(username);
 		return ResponseEntity.ok("Delete successful");
 	}
 

@@ -40,13 +40,13 @@ public class UserRepositoryTest {
 
 	@Test
 	public void insert() {
-		repository.save(new User("Mario"));
+		repository.save(new User("Mario", "A"));
 		assertTrue(repository.count() > 0, "UserRepository save failed.");
 	}
 
 	@Test
 	public void find() {
-		User user = new User("Mario");
+		User user = new User("Mario", "A");
 		repository.save(user);
 
 		List<User> users = repository.findAll();
@@ -58,8 +58,8 @@ public class UserRepositoryTest {
 
 	@Test
 	public void findAll() {
-		User user1 = new User("Mario");
-		User user2 = new User("Luigi");
+		User user1 = new User("Mario", "A");
+		User user2 = new User("Luigi", "A");
 		repository.save(user1);
 		repository.save(user2);
 		List<User> users = repository.findAll();
@@ -70,15 +70,15 @@ public class UserRepositoryTest {
 
 	@Test
 	public void delete() {
-		User user1 = new User("Mario");
-		User user2 = new User("Luigi");
+		User user1 = new User("Mario", "A");
+		User user2 = new User("Luigi", "A");
 		repository.save(user1);
 		repository.save(user2);
 		List<User> users = repository.findAll();
 
 		int previousSize = users.size();
 
-		repository.deleteByUsername(users.get(0).getUsername());
+		repository.deleteById(users.get(0).getUsername());
 
 		users = repository.findAll();
 

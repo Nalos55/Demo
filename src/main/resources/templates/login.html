@@ -6,17 +6,30 @@
 </head>
 
 <body>
-    <div th:if="${param.error}">
-        Invalid username and password.
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="card-text" th:if="${param.error}">
+                            Invalid username and password.
+                        </div>
+                        <div class="card-text" th:if="${param.logout}">
+                            You have been logged out.
+                        </div>
+                        <form th:action="@{/login}" method="post">
+                            <div><label class="form-label"> User Name : <input type="text" name="username" /> </label>
+                            </div>
+                            <div><label class="form-label"> Password: <input type="password" name="password" /> </label>
+                            </div>
+                            <div><input type="submit" value="Sign in" class="btn btn-body" /></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post">
-        <div><label> User Name : <input type="text" name="username" /> </label></div>
-        <div><label> Password: <input type="password" name="password" /> </label></div>
-        <div><input type="submit" value="Sign In" /></div>
-    </form>
+
 </body>
 
 </html>

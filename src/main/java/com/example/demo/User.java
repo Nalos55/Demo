@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,7 +17,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 @JsonIgnoreProperties(ignoreUnknown = true, value = { "authorities", "accountNonExpired", "enabled",
-		"credentialsNonExpired" })
+		"credentialsNonExpired", "password" })
 public class User implements UserDetails {
 
 	@Id
@@ -28,14 +29,8 @@ public class User implements UserDetails {
 	User() {
 //		this.authorities = new ArrayList<>();
 //		this.authorities.add(new SimpleGrantedAuthority("read"));
-		this.accountNonLocked = true;
-	}
-
-	public User(String name) {
-		this();
-		this.username = name;
 		this.password = "";
-
+		this.accountNonLocked = true;
 	}
 
 	public User(String name, String password) {
@@ -63,11 +58,6 @@ public class User implements UserDetails {
 	}
 
 	@Override
-	public String toString() {
-		return username;
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -85,7 +75,9 @@ public class User implements UserDetails {
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
 //		return this.authorities;
-		return List.of(() -> "read");
+//		return List.of(() -> "read");
+		return List.of(new SimpleGrantedAuthority("read"),
+				new SimpleGrantedAuthority("write"));
 	}
 
 	@Override
@@ -114,5 +106,10 @@ public class User implements UserDetails {
 
 	public boolean getAccountNonLocked() {
 		return accountNonLocked;
+	}
+
+	@Override
+	public String toString() {
+		return (this.username + " " + this.password);
 	}
 }

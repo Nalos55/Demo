@@ -6,32 +6,36 @@
 </head>
 
 <body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <div class="container">
-        <form method="get" th:action="@{/client/users/registration}" enctype="utf8">
-            <button type="submit">AddUser</button>
-        </form>
-        <table class="table">
-            <tr>
-                <th>Name</td>
-            </tr>
-            <tr th:each="user: ${users}">
-                <td th:text="${user.username}"></td>
-                <td>
-                    <form th:method="get" th:action="@{/client/users/modify/{username}(username=${user.username})}"
-                        enctype="utf8">
-                        <button type="submit">Modify User</button>
-                    </form>
-                </td>
-                <td>
-                    <form th:method="post" th:action="@{/client/users/delete/{username}(username=${user.username})}"
-                        enctype="utf8">
-                        <button type="submit">Delete
-                            User</button>
-                    </form>
-                </td>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="col">
+                <form method="get" th:action="@{/client/users/registration}" enctype="utf8">
+                    <input type="submit" value="Add User" class="btn btn-body mb-3"></input>
+                </form>
+                <div class="card mb-1" th:each="user: ${users}">
+                    <div class="card-body d-flex">
+                        <div class="card-title my-auto mr-auto" th:text="${user.username}"></div>
+                        <div>
+                            <form th:method="get"
+                                th:action="@{/client/users/modify/{username}(username=${user.username})}" enctype="utf8"
+                                class="d-inline">
+                                <input type="submit" value="Modify User" class="btn btn-crud"></input>
+                            </form>
+                            <form th:method="post"
+                                th:action="@{/client/users/delete/{username}(username=${user.username})}" enctype="utf8"
+                                class="d-inline">
+                                <input type="submit" value="Delete User" class="btn btn-crud"></input>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </body>
 
