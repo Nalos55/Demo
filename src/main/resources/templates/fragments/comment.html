@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+    <div class="card m-3" th:fragment="comment(node)">
+        <div class="m-3" th:text="${node.id}"></div>
+        <div class="m-3" th:text="${node.content}"></div>
+        <div class="m-3" th:text="'Post: ' + ${node.post.id}"></div>
+        <div th:if="${node.parent.isPresent()}">
+            <div class="m-3" th:text="'Parent: ' + ${node.parent.get().id}"></div>
+        </div>
+        <div th:each="child : ${children}">
+            <div th:replace="~{this :: leafComment(${child})}"></div>
+        </div>
+        <div th:replace="~{this :: newReply(${node.post.id}, ${node.id})}"></div>
+    </div>
+
+    <div class="card m-3" th:fragment="leafComment(node)">
+        <div class="m-3" th:text="${node.id}"></div>
+        <div class="m-3" th:text="${node.content}"></div>
+        <div class="m-3" th:text="'Post: ' + ${node.post.id}"></div>
+        <div th:if="${node.parent.isPresent()}">
+            <div class="m-3" th:text="'Parent: ' + ${node.parent.get().id}"></div>
+        </div>
+        <div th:replace="~{this :: newReply(${node.post.id}, ${node.id})}"></div>
+        <div class="m-3">
+            <form th:method="get" th:action="@{/comment/{id} (id=${node.id})}" enctype="utf8">
+                <input type="submit" value="Show replies" class="btn btn-secondary"></input>
+            </form>
+        </div>
+    </div>
+
+    <div class="card-body" th:fragment="newComment(postId)">
+        <div>
+            <button class="btn btn-secondary" type="button" data-toggle="collapse"
+                th:attr="data-target='#newComment' + ${postId}">Create
+                comment
+            </button>
+            <div th:replace="~{fragments/comment :: replyPost(${postId})}">
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="replyPost(postId)">
+        <div th:attr="id='newComment' + ${postId}" class="card m-3 collapse">
+            <div class="card-body">
+                <h5 class="card-title">Create Comment</h5>
+                <form class="d-block" th:method="post" th:action="@{/comments/{post}(post = ${postId})}" enctype="utf8"
+                    th:object="${comment}">
+                    <div>
+                        <label for="content" class="form-label d-block w-100">Content: <textarea placeholder="Content"
+                                th:value="${content}" name="content" id="content" class="textarea d-block w-100"
+                                rows="15"></textarea></label>
+                    </div>
+                    <div><input type="submit" value="Submit" class="btn btn-secondary"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body" th:fragment="newReply(postId, parentId)">
+        <div>
+            <button class="btn btn-secondary" type="button" data-toggle="collapse"
+                th:attr="data-target=${'#newComment' + postId + '-' + parentId}">Create
+                comment
+            </button>
+            <div th:replace="~{fragments/comment :: replyComment(${postId}, ${parentId})}">
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="replyComment(postId, parentId)">
+        <div th:attr="id=${'newComment' + postId + '-' + parentId}" class="card m-3 collapse">
+            <div class="card-body">
+                <h5 class="card-title">Create Comment</h5>
+                <form class="d-block" th:method="post"
+                    th:action="@{/comments/{post}/{parentId} (post = ${postId}, parentId = ${parentId})}" enctype="utf8"
+                    th:object="${comment}">
+                    <div>
+                        <label for="content" class="form-label d-block w-100">Content: <textarea placeholder="Content"
+                                th:value="${content}" name="content" id="content" class="textarea d-block w-100"
+                                rows="15"></textarea></label>
+                    </div>
+                    <div><input type="submit" value="Submit" class="btn btn-secondary"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>

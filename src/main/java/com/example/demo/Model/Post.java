@@ -1,16 +1,19 @@
-package com.example.demo;
+package com.example.demo.Model;
 
-import java.time.LocalDate;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true, value = { "date" })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
 
 	@Id
@@ -19,13 +22,16 @@ public class Post {
 	private String owner;
 	private String title;
 	private String content;
-	private LocalDate date;
+	private Long commentCount = Long.valueOf(0);
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Comment> comments;
 
 	public Post() {
 	}
 
 	public Post(String owner, String title, String content) {
-		setDate(LocalDate.now());
 		setOwner(owner);
 		setTitle(title);
 		setContent(content);
@@ -51,14 +57,6 @@ public class Post {
 		this.content = content;
 	}
 
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
 	public String getTitle() {
 		return title == null ? "Title" : title;
 	}
@@ -67,8 +65,28 @@ public class Post {
 		this.title = title;
 	}
 
-	@Override
-	public String toString() {
-		return (this.title + " - " + this.content);
+	public List<Comment> getComments() {
+		return comments;
 	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public Long getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Long commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+//	@Override
+//	public String toString() {
+//		return (this.title + " - " + this.content);
+//	}
 }

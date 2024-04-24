@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<head>
+    <div th:replace="~{fragments/head :: head}"></div>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div th:replace="~{fragments/comment :: comment(node = ${mainComment})}">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

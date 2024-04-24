@@ -11,16 +11,26 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <div class="card mb-5" th:each="post: ${posts}">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${post.title}"></h5>
-                        <hr class="border-card" />
-                        <p class="card-text" th:text="${post.content}"></p>
-                        <form th:method="post"
-                            th:action="@{/deletePost/{owner}/{id}(owner=${post.owner}, id=${post.id})}" enctype="utf8"
-                            class="form-inline justify-content-end">
-                            <input type="submit" value="Delete Post" class="btn btn-body"></input>
-                        </form>
+                <div th:each="post: ${posts}">
+                    <div class="card">
+                        <div class="card-body mb-5">
+                            <h5 class="card-title" th:text="${post.title}"></h5>
+                            <hr class="border-card" />
+                            <p class="card-text" th:text="${post.content}"></p>
+                            <p th:text="${post.id}"></p>
+                        </div>
+                        <div class="card-body">
+                            <form th:method="get" th:action="@{/post/{postId} (postId=${post.id})}" enctype="utf8">
+                                <input type="submit" value="Show comments" class="btn btn-secondary"></input>
+                            </form>
+                        </div>
+                        <div th:replace="~{fragments/comment :: newComment(${post.id})}"></div>
+                        <div class="card-body">
+                            <form th:method="post" th:action="@{/deletePost/{id} (id=${postId})}" enctype="utf8">
+                                <input type="submit" value="Delete Post" class="btn btn-secondary"></input>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>

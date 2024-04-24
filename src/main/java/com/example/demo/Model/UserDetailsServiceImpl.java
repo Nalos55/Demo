@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Model;
 
 import java.util.Collection;
 
@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.example.demo.Repository.UserRepository;
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
@@ -17,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
-		com.example.demo.User user;
+		com.example.demo.Model.User user;
 		try {
 			user = repository.findByUsername(username).get();
 			if (user == null)
@@ -29,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return buildUserFromUserEntity(user);
 	}
 
-	private User buildUserFromUserEntity(com.example.demo.User userEntity) {
+	private User buildUserFromUserEntity(com.example.demo.Model.User userEntity) {
 		// convert model user to spring security user
 		String username = userEntity.getUsername();
 		String password = userEntity.getPassword();

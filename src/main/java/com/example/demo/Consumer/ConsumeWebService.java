@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Consumer;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.demo.Model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

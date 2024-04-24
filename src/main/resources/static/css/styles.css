@@ -27,9 +27,14 @@ body {
     border: 1px solid #57107a;
     background-color: #A020F0;
     color: #FFD700;
-    font-size: 20px;
+    font-size: 1.25rem;
+    font-weight: bold;
     align-self: start;
     margin: auto;
+}
+
+.btn-body {
+    margin-top: 1rem;
 }
 
 .btn-dropdown {
@@ -53,4 +58,9 @@ body {
 .card,
 .border-card {
     border-color: #A020F0;
+}
+
+.navbar-toggler-icon {
+    background-color: white;
+    color: black;
 }

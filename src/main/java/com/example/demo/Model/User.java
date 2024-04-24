@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Model;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +26,7 @@ public class User implements UserDetails {
 	private boolean accountNonLocked;
 //	private Collection<GrantedAuthority> authorities;
 
-	User() {
+	public User() {
 //		this.authorities = new ArrayList<>();
 //		this.authorities.add(new SimpleGrantedAuthority("read"));
 		this.password = "";

@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -6,6 +6,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
+import com.example.demo.Controller.UserController;
+import com.example.demo.Model.User;
 
 @Component
 public class UserModelAssembler implements RepresentationModelAssembler<User, EntityModel<User>> {

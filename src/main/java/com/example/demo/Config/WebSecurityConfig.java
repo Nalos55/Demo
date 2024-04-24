@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import com.example.demo.Model.UserDetailsServiceImpl;
+import com.example.demo.Repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -57,6 +60,7 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests((requests) -> {
 					requests
 							.requestMatchers(mvc.pattern("/posts")).authenticated()
+							.requestMatchers(mvc.pattern("/addComment")).authenticated()
 							// .anyRequest().authenticated();
 							.anyRequest().permitAll();
 				})

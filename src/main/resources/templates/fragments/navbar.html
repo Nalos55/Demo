@@ -6,18 +6,26 @@
 </head>
 
 <body>
-    <nav class="navbar pr-0" th:fragment="navbar">
-        <div class="container-fluid">
-            <div class="row align-items-center w-100">
-                <div class="col-auto navbar-brand">
-                    <form class="form-inline" th:method=get th:action="@{/}">
-                        <input type="submit" value="" class="btn btn-logo">
-                    </form>
-                </div>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-sm pr-0" th:fragment="navbar">
 
-                <div class="col-auto nav-item dropdown p-0 m-1">
-                    <a class="nav-link dropdown-toggle btn btn-navbar" href="#" id="navbarUsersDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
+        <button class="navbar-toggler btn btn-secondary ml-auto mr-3" type="button" data-toggle="collapse"
+            data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+            aria-label="Toggle navigation">
+            Menu
+            <!--<span class="navbar-toggler-icon"></span>-->
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="col-auto navbar-brand">
+                <form class="form-inline" th:method=get th:action="@{/}">
+                    <input type="submit" value="Home" class="btn btn-secondary">
+                </form>
+            </div>
+
+            <div class="navbar-nav w-100">
+                <div class="nav-item dropdown p-0 m-1">
+                    <a class="nav-link dropdown-toggle btn btn-secondary" href="#" id="navbarUsersDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
                     <div class="dropdown-menu" aria-labelledby="navbarUsersDropdown">
                         <form class="dropdown-item" th:method=get th:action="@{/client/users}">
                             <input type="submit" value="Print users" class="btn btn-dropdown" />
@@ -28,9 +36,9 @@
                     </div>
                 </div>
 
-                <div class="col-auto nav-item dropdown p-0 m-1">
-                    <a class="nav-link dropdown-toggle btn btn-navbar" href="#" id="navbarPostsDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Posts</a>
+                <div class="nav-item dropdown p-0 m-1">
+                    <a class="nav-link dropdown-toggle btn btn-secondary" href="#" id="navbarPostsDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Posts</a>
                     <div class="dropdown-menu" aria-labelledby="navbarPostsDropdown">
                         <form class="dropdown-item" th:method=get th:action="@{/posts}">
                             <input type="submit" value="Posts" class="btn btn-dropdown" />
@@ -41,10 +49,20 @@
                     </div>
                 </div>
 
-                <div class="col-auto nav-item justify-content-end ml-auto pr-0">
-                    <form sec:authorize="isAuthenticated()" class="form-inline" th:action="@{/logout}" method="post">
+                <div class="nav-item dropdown p-0 m-1">
+                    <a class="nav-link dropdown-toggle btn btn-secondary" href="#" id="navbarCommentsDropdown"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Comments</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarCommentsDropdown">
+                        <form class="dropdown-item" th:method=get th:action="@{/comments}">
+                            <input type="submit" value="Comments" class="btn btn-dropdown" />
+                        </form>
+                    </div>
+                </div>
+
+                <div class="nav-item ml-auto mr-3">
+                    <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
                         <h1 sec:authentication="name" class="mr-2"></h1>
-                        <input type="submit" value="Sign Out" class="btn btn-logout" />
+                        <input type="submit" value="Sign Out" class="btn btn-secondary" />
                     </form>
                     <form sec:authorize="isAnonymous()" class="form-inline" th:action="@{/login}" method="post">
                         <input type="submit" value="Sign In" class="btn btn-logout" />

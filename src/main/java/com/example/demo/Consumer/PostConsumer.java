@@ -1,5 +1,5 @@
 
-package com.example.demo;
+package com.example.demo.Consumer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,23 +17,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.example.demo.Model.Comment;
+import com.example.demo.Model.Post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Controller
 public class PostConsumer {
 
 	WebClient client = WebClient.builder()
-			.baseUrl("http://localhost:8080/api/posts")
+			.baseUrl("http://localhost:8080/api")
 			.build();
 
 	@GetMapping("/posts")
-	public String showPosts2(Model model) {
+	public String showPosts(Model model) {
 		JsonNode result = client.get()
-				.uri("/all")
+				.uri("/posts/all")
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.bodyToMono(JsonNode.class)
@@ -42,13 +43,12 @@ public class PostConsumer {
 
 		if (result.has("_embedded")) {
 			result = result.get("_embedded").get("postList");
-			result.forEach(e -> {
-				ObjectNode objectNode = (ObjectNode) e;
-				objectNode.remove("_links");
-			});
+//			result.forEach(e -> {
+//				ObjectNode objectNode = (ObjectNode) e;
+//				objectNode.remove("_links");
+//			});
 
-			ObjectMapper mapper = new ObjectMapper();
-			ObjectReader reader = mapper.readerFor(new TypeReference<List<Post>>() {
+			ObjectReader reader = new ObjectMapper().readerFor(new TypeReference<List<Post>>() {
 			});
 
 			try {
@@ -60,6 +60,57 @@ public class PostConsumer {
 
 		model.addAttribute("posts", posts);
 		return "posts";
+	}
+
+//	@ResponseBody
+	@GetMapping("/post/{id}")
+	public String showPost(@PathVariable("id") Long id, Model model) {
+		JsonNode result = client.get()
+				.uri("/posts/id/" + id)
+				.retrieve()
+				.bodyToMono(JsonNode.class)
+				.block();
+		if (result.isEmpty())
+			return null;
+
+		ObjectReader reader = new ObjectMapper().readerFor(new TypeReference<Post>() {
+		});
+
+		Post post = null;
+		try {
+			post = reader.readValue(result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		model.addAttribute("post", post);
+
+		result = client.get()
+				.uri("/comments/allRoot/" + id)
+				.retrieve()
+				.bodyToMono(JsonNode.class)
+				.block();
+		if (result.isEmpty())
+			return null;
+
+		List<Comment> rootComments = new ArrayList<>();
+		if (result.has("_embedded")) {
+			result = result.get("_embedded").get("commentList");
+
+			reader = new ObjectMapper().readerFor(new TypeReference<List<Comment>>() {
+			});
+
+			try {
+				rootComments = reader.readValue(result);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		model.addAttribute("rootComments", rootComments);
+
+		return "post";
+//		return result.toString();
 	}
 
 	@GetMapping("/newPost")
@@ -75,7 +126,7 @@ public class PostConsumer {
 		User owner = (User) auth.getPrincipal();
 		post.setOwner(owner.getUsername());
 		client.post()
-				.uri("/new")
+				.uri("/posts/new")
 				.bodyValue(post)
 				.retrieve()
 				.bodyToMono(String.class)
@@ -83,20 +134,24 @@ public class PostConsumer {
 		return "redirect:/posts";
 	}
 
-	@PostMapping("/deletePost/{owner}/{id}")
-	public String deletePost(@PathVariable("owner") String owner, @PathVariable("id") Long id) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User currentUser = (User) auth.getPrincipal();
-
-		if (!owner.equals(currentUser.getUsername())) {
-			return "redirect:/posts";
-		}
-
+	@PostMapping("/deletePost/{id}")
+	public String deletePost(@PathVariable("id") Long id) {
 		client.delete()
-				.uri("/delete/" + id)
+				.uri("/posts/delete/" + id)
 				.retrieve()
 				.bodyToMono(String.class)
 				.block();
 		return "redirect:/posts";
 	}
+
+	/*
+	 * @PostMapping("/{postId}/newComment") public String
+	 * addComment(@PathVariable("postId") Long postId) { Authentication auth =
+	 * SecurityContextHolder.getContext().getAuthentication(); User currentUser =
+	 * (User) auth.getPrincipal();
+	 * 
+	 * Comment comment = new Comment(null, currentUser.getUsername(), content);
+	 * comment.setPostId(postId); }
+	 * 
+	 */
 }

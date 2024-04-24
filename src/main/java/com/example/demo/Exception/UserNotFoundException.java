@@ -1,8 +1,8 @@
-package com.example.demo;
+package com.example.demo.Exception;
 
 public class UserNotFoundException extends RuntimeException {
 
-	UserNotFoundException(String username) {
+	public UserNotFoundException(String username) {
 		super("Could not find user with username: " + username);
 	}
 }
